@@ -30,7 +30,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import rospy
-from std_msgs.msg import Int64MultiArray
+from std_msgs.msg import  Int16MultiArray
 from geometry_msgs.msg import Twist
 import sys, select, os
 
@@ -190,7 +190,8 @@ if __name__ == "__main__":
     while rospy.get_param("success", False) != True:
         pass
     # pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-    pub = rospy.Publisher("Cypered_cmd_vel", Int64MultiArray, queue_size=20)
+    os.system("rosnode kill /get_keys")
+    pub = rospy.Publisher("Cypered_cmd_vel", Int16MultiArray, queue_size=20)
 
     turtlebot3_model = rospy.get_param("model", "burger")
 
@@ -261,10 +262,11 @@ if __name__ == "__main__":
             twist.angular.y = 0.0
             twist.angular.z = control_angular_vel
             str_msg = str(twist.linear.x) + " " + str(twist.angular.z)
-            cipher_msg = Int64MultiArray()
-            cipher_msg.data = list(Encrypt(str_msg.encode('ASCII'), public_key))
-            # print(cipher_msg.data)
+            print(str_msg)
+            cipher_msg = Int16MultiArray()
+            cipher_msg.data = list(Encrypt(str_msg.encode("'ASCII'"), public_key))
             pub.publish(cipher_msg)
+        
 
     except:
         print(e)
@@ -278,7 +280,7 @@ if __name__ == "__main__":
         twist.angular.y = 0.0
         twist.angular.z = 0.0
         str_msg = str(twist.linear.x) + " " + str(twist.angular.z)
-        cipher_msg = Int64MultiArray()
+        cipher_msg = Int16MultiArray()
         cipher_msg.data = list(Encrypt(str_msg.encode('UTF-8'), public_key))
         pub.publish(cipher_msg)
 

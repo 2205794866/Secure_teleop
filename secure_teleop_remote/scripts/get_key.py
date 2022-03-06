@@ -1,9 +1,10 @@
 import rospy
 import os
+# 导入srv文件
 from secure_teleop_remote.srv import key, keyRequest, keyResponse
 
-
 def handle_receive_public_key(req :keyRequest):
+    #生成秘钥文件
     home = os.path.expanduser("~")
     try:
         os.chdir(home + "/Key1")
